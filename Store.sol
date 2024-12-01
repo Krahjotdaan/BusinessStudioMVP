@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.22;
 
-import {IAnalyticsCenter} from "interfaces/IAnalitycsCenter.sol"; 
+import {IAnalyticalCenter} from "interfaces/IAnalitycalCenter.sol"; 
 import {IDistributionCenter} from "interfaces/IDistributionCenter.sol";
 
 contract Store {
@@ -28,7 +28,7 @@ contract Store {
     address public dc;
     address public ac;
     IDistributionCenter public distributionCenter;
-    IAnalyticsCenter public analyticsCenter;
+    IAnalyticalCenter public analyticalCenter;
 
     mapping (uint256 => Goods) public warehouse;
     mapping (uint256 => Order) public ordersList;
@@ -37,16 +37,16 @@ contract Store {
     event Purchased(uint256 indexed goodsId, uint256 indexed amount);
     event OrderApproved(uint256 indexed orderId);
 
-    constructor(address _distributionCenter, address _analyticsCenter) {
+    constructor(address _distributionCenter, address _analyticalCenter) {
         manager = msg.sender;
 
         dc = _distributionCenter;
-        ac = _analyticsCenter;
+        ac = _analyticalCenter;
         
         distributionCenter = IDistributionCenter(_distributionCenter);
-        analyticsCenter = IAnalyticsCenter(_analyticsCenter);
+        analyticalCenter = IAnalyticalCenter(_analyticalCenter);
         distributionCenter.registerStore(address(this));
-        analyticsCenter.registerStore(address(this));
+        analyticalCenter.registerStore(address(this));
     }
 
     function createDistributionRequest(uint256 goodsId, uint256 amount) external {
@@ -54,7 +54,7 @@ contract Store {
         require(amount > 0, "Store: amount must be greater than 0");
         require(warehouse[goodsId].amount <= warehouse[goodsId].threshold, "Store: threshold for goods exceeded.");
     
-        require(analyticsCenter.registerDistributionRequest(goodsId, amount));
+        require(analyticalCenter.registerDistributionRequest(goodsId, amount));
 
         emit CreatedDistributoinRequest(goodsId, amount);
     }

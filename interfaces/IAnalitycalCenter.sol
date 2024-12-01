@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.22;
 
-interface IAnalyticsCenter {
+interface IAnalyticalCenter {
 
     struct Order {
         address store;
