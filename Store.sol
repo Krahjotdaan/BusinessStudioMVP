@@ -25,8 +25,8 @@ contract Store {
     }
 
     address public manager;
-    address dc;
-    address ac;
+    address public dc;
+    address public ac;
     IDistributionCenter public distributionCenter;
     IAnalyticsCenter public analyticsCenter;
 
@@ -90,5 +90,17 @@ contract Store {
         distributionCenter.approvedByStore(orderId);
 
         emit OrderApproved(orderId);
+    }
+
+    function getGoods(uint256 goodsId) external view returns (Goods memory) {
+        require(warehouse[goodsId].goodsId == goodsId, "Store: goods with that id does not exist in the warehouse.");
+
+        return warehouse[goodsId];
+    }
+
+    function getOrder(uint256 orderId) external view returns (Order memory) {
+        require(ordersList[orderId].orderId == orderId, "Store: order with that id does not exist in the order list.");
+
+        return ordersList[orderId]; 
     }
 }
